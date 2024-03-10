@@ -29,42 +29,12 @@ public static class Program
             throw new InvalidOperationException("Failed to initialize SDL.");
         }
 
-        IntPtr window;
-        unsafe
-        {
-            window = (IntPtr)sdl.CreateWindow(
-                "The Adventure", Sdl.WindowposUndefined, Sdl.WindowposUndefined, 800, 800,
-                (uint)WindowFlags.Resizable | (uint)WindowFlags.AllowHighdpi
-            );
+        var GameWindow gameWindow = new GameWindow(sdl);
 
-            if (window == IntPtr.Zero)
-            {
-                var ex = sdl.GetErrorAsException();
-                if (ex != null)
-                {
-                    throw ex;
-                }
-
-                throw new Exception("Failed to create window.");
-            }
-        }
+        var GameRenderer = new GameRenderer(sdl, gameWindow);
 
         IntPtr renderer;
-        unsafe
-        {
-            renderer = (IntPtr)sdl.CreateRenderer((Window*)window, -1, (uint)RendererFlags.Accelerated);
-        }
-
-        if (renderer == IntPtr.Zero)
-        {
-            var ex = sdl.GetErrorAsException();
-            if (ex != null)
-            {
-                throw ex;
-            }
-
-            throw new Exception("Failed to create renderer.");
-        }
+        
 
         bool quit = false;
         while (!quit)
@@ -192,18 +162,13 @@ public static class Program
             timer.Restart();
 
             // game.render(renderer, RenderEvent{ elapsed, framesRenderedCounter++ });
-            unsafe
-            {
-                sdl.RenderPresent((Renderer*)renderer);
-            }
+
+            gameRenderer.Present();
 
             ++framesRenderedCounter;
         }
 
-        unsafe
-        {
-            sdl.DestroyWindow((Window*)window);
-        }
+        gameWindow.Destroy();
 
         sdl.Quit();
     }
