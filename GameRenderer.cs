@@ -14,7 +14,7 @@ namespace TheAdventure
             _window = gameWindow;
             _renderer = _window.CreateRenderer();
         }
-
+        
         public void Present()
         {
             _sdl.RenderPresent((Renderer*)_renderer);
