@@ -1,6 +1,16 @@
 using Silk.NET.Maths;
 using TheAdventure;
 
+public enum PlayerState
+{
+    Idle,
+    WalkingUp,
+    WalkingDown,
+    WalkingLeft,
+    WalkingRight,
+    // Add more states as needed
+}
+
 public class PlayerObject : GameObject
 {
     /// <summary>
@@ -20,6 +30,8 @@ public class PlayerObject : GameObject
     private int _textureId;
     private int _pixelsPerSecond = 128;
 
+    public PlayerState CurrentState { get; private set; }
+    private bool _isMoving;
     public PlayerObject(int id) : base(id)
     {
         _textureId = GameRenderer.LoadTexture(Path.Combine("Assets", "player.png"), out var textureData);
@@ -44,6 +56,38 @@ public class PlayerObject : GameObject
 
         UpdateScreenTarget();
     }
+
+    // Update player state based on movement inputs
+    public void UpdatePlayerState(double up, double down, double left, double right)
+    {
+        if (up != 0)
+        {
+            CurrentState = PlayerState.WalkingUp;
+        }
+        else if (down != 0)
+        {
+            CurrentState = PlayerState.WalkingDown;
+        }
+        else if (left != 0)
+        {
+            CurrentState = PlayerState.WalkingLeft;
+        }
+        else if (right != 0)
+        {
+            CurrentState = PlayerState.WalkingRight;
+        }
+        else
+        {
+            // If no movement inputs are active, set the player state to idle
+            CurrentState = PlayerState.Idle;
+        }
+
+        // debugg
+        Console.WriteLine("Current State: " + CurrentState);
+    }
+
+
+
 
     public void Render(GameRenderer renderer){
         renderer.RenderTexture(_textureId, _source, _target);

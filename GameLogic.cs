@@ -13,6 +13,7 @@ namespace TheAdventure
         private Level? _currentLevel;
         private PlayerObject _player;
 
+        private int _idleTime = 0; // Initialize idle time counter
         public GameLogic()
         {
             
@@ -77,8 +78,15 @@ namespace TheAdventure
         public void UpdatePlayerPosition(double up, double down, double left, double right, int timeSinceLastUpdateInMS)
         {
             _player.UpdatePlayerPosition(up, down, left, right, timeSinceLastUpdateInMS);
-            
+            _player.UpdatePlayerState(up, down, left, right);
         }
+
+        public void UpdatePlayerPosition(bool idle)
+        {
+            _player.UpdatePlayerState(0, 0, 0, 0);
+        }
+
+
 
         public (int x, int y) GetPlayerCoordinates()
         {

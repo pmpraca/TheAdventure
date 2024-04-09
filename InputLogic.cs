@@ -8,13 +8,14 @@ namespace TheAdventure{
         private GameWindow _gameWindow;
         private GameRenderer _renderer;
         private DateTimeOffset _lastUpdate;
-
+        private DateTimeOffset _lastMovementUpdate;    
         public InputLogic(Sdl sdl, GameWindow window, GameRenderer renderer, GameLogic logic){
             _sdl = sdl;
             _gameLogic = logic;
             _gameWindow = window;
             _renderer = renderer;
             _lastUpdate = DateTimeOffset.UtcNow;
+            _lastMovementUpdate = DateTimeOffset.UtcNow;
         }
 
         public bool ProcessInput()
@@ -25,6 +26,14 @@ namespace TheAdventure{
             Event ev = new Event();
             var mouseX = 0;
             var mouseY = 0;
+
+            var timeSinceLastMovement = (int)currentTime.Subtract(_lastMovementUpdate).TotalMilliseconds;
+
+            if (mouseButtonStates[(byte)MouseButton.Primary] == 1)
+            {
+                _gameLogic.AddBomb(mouseX, mouseY);
+            }
+
             while (_sdl.PollEvent(ref ev) != 0)
             {
                 if (ev.Type == (uint)EventType.Quit)
@@ -134,10 +143,23 @@ namespace TheAdventure{
                     }
 
                     case (uint)EventType.Keyup:
-                    {
-                        
+                        switch (ev.Key.Keysym.Scancode)
+                        {
+                            case Scancode.ScancodeUp:
+                            case Scancode.ScancodeDown:
+                            case Scancode.ScancodeLeft:
+                            case Scancode.ScancodeRight:
+                                // Debug message indicating that a movement key is released
+                                Console.WriteLine("Movement key released: " + ev.Key.Keysym.Scancode);
+
+                                // Check if a movement key was released
+                                _lastMovementUpdate = DateTimeOffset.UtcNow;
+
+                                //Console.WriteLine("last update time: " + _lastMovementUpdate);
+                                break;
+                                // Add more cases for other keys if needed
+                        }
                         break;
-                    }
 
                     case (uint)EventType.Keydown:
                     {
@@ -146,26 +168,37 @@ namespace TheAdventure{
                 }
             }
 
+            var elapsedTimeSinceMovementUpdate = DateTimeOffset.UtcNow - _lastMovementUpdate;
+            var oneSecond = TimeSpan.FromSeconds(1);
+
+            if (elapsedTimeSinceMovementUpdate >= oneSecond)
+            {
+                _gameLogic.UpdatePlayerPosition(true);
+            }
+
+
             var timeSinceLastUpdateInMS = (int)currentTime.Subtract(_lastUpdate).TotalMilliseconds;
 
-            if (_keyboardState[(int)Scancode.ScancodeUp] == 1){
+            if (_keyboardState[(int)Scancode.ScancodeUp] == 1)
+            {
                 _gameLogic.UpdatePlayerPosition(1.0, 0, 0, 0, timeSinceLastUpdateInMS);
             }
-            else if (_keyboardState[(int)Scancode.ScancodeDown] == 1){
+            else if (_keyboardState[(int)Scancode.ScancodeDown] == 1)
+            {
                 _gameLogic.UpdatePlayerPosition(0, 1.0, 0, 0, timeSinceLastUpdateInMS);
             }
-            else if (_keyboardState[(int)Scancode.ScancodeLeft] == 1){
+            else if (_keyboardState[(int)Scancode.ScancodeLeft] == 1)
+            {
                 _gameLogic.UpdatePlayerPosition(0, 0, 1.0, 0, timeSinceLastUpdateInMS);
             }
-            else if (_keyboardState[(int)Scancode.ScancodeRight] == 1){
+            else if (_keyboardState[(int)Scancode.ScancodeRight] == 1)
+            {
                 _gameLogic.UpdatePlayerPosition(0, 0, 0, 1.0, timeSinceLastUpdateInMS);
             }
 
             _lastUpdate = currentTime;
 
-            if (mouseButtonStates[(byte)MouseButton.Primary] == 1){
-                _gameLogic.AddBomb(mouseX, mouseY);
-            }
+            
             return false;
         }
     }
