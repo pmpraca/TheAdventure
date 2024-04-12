@@ -19,9 +19,9 @@ public class ChickenLegObject : GameObject
      
         private int _textureId;
 
-        public ChickenLegObject(int id, int x, int y) : base(id)
+        public ChickenLegObject(int id, int x, int y, string filePath) : base(id)
         {
-            _textureId = GameRenderer.LoadTexture(Path.Combine("Assets", "healthy_chicken_leg3.png"), out var textureData);
+            _textureId = GameRenderer.LoadTexture(Path.Combine("Assets", filePath), out var textureData);
             X = x;
             Y = y;
         }

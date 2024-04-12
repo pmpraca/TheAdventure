@@ -48,7 +48,10 @@ public class PlayerObject : GameObject
 
     public void decreaseVelocity(int decreased_velocity)
     {
-        _pixelsPerSecond = decreased_velocity;
+        if(_pixelsPerSecond > 48)
+            _pixelsPerSecond -= decreased_velocity;
+        
+        //Console.WriteLine(_pixelsPerSecond);
     }
 
     public void Render(GameRenderer renderer)

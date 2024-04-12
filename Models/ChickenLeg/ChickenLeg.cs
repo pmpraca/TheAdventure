@@ -13,9 +13,9 @@ namespace TheAdventure.Models.ChickenLeg
         static int currentId = 1;
 
 
-        public void addLeg(int x, int y)
+        public void AddLeg(int x, int y, string filePath)
         {
-            chickenLegObjects.Add(new ChickenLegObject(currentId, x, y));
+            chickenLegObjects.Add(new ChickenLegObject(currentId, x, y, filePath));
             currentId++;
         }
 
@@ -26,18 +26,18 @@ namespace TheAdventure.Models.ChickenLeg
                 stone.Render(renderer);
             }
 
-
         }
 
+        // Gets hungry -> remove chicken leg
         public bool RemoveLeg(int id)
         {
             var legToRemove = chickenLegObjects.FirstOrDefault(leg => leg.Id == id);
             if (legToRemove != null)
             {
                 chickenLegObjects.Remove(legToRemove);
-                return true; // Leg successfully removed
+                return true; 
             }
-            return false; // Leg with the given ID not found
+            return false; 
         }
     }
 }

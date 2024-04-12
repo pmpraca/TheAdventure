@@ -14,6 +14,8 @@ namespace TheAdventure
         private Level? _currentLevel;
         private PlayerObject _player;
         private ChickenLeg _chickenLegs = new();
+        private string filePathCL_Hunger = "missing_chicken_leg.png";
+        private string filePathCL_NoHunger = "healthy_chicken_leg.png";
         public GameLogic()
         {
 
@@ -23,12 +25,16 @@ namespace TheAdventure
         {
             _player = new PlayerObject(1000);
 
-            _chickenLegs.addLeg(2,0);
-            _chickenLegs.addLeg(18,0);
-            _chickenLegs.addLeg(34,0);
-            _chickenLegs.addLeg(50,0);
-            _chickenLegs.addLeg(66,0);
-     
+            
+            // Define leg positions
+            int[] legPositions = { 2, 18, 34, 50, 66 };
+
+            // Add chicken legs at defined positions
+            foreach (int position in legPositions)
+            {
+                _chickenLegs.AddLeg(position, 0, filePathCL_NoHunger);
+            }
+
             var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
             var levelContent = File.ReadAllText(Path.Combine("Assets", "terrain.tmj"));
 
@@ -168,38 +174,34 @@ namespace TheAdventure
         public void getHungry()
         {
             _hunger++;
-            int decrease = 0;
+
+            // Define hunger thresholds & corresponding positions for chicken legs
+            int[] hungerThresholds = { 1, 2, 3, 4, 5 };
+            int[] legPositions = { 66, 50, 34, 18, 2 }; // Legs are removed from right to left
+
+            bool lastLeg = false;
+            int decrease = 10; 
 
             // Determine the decrease in velocity based on hunger level
-            switch (_hunger)
+            for (int i = 0; i < hungerThresholds.Length; i++)
             {
-                case 5:
-                    decrease = 44;
-                    _chickenLegs.RemoveLeg(1);
-                    break;
-                case 4:
-                    decrease = 88;
-                    _chickenLegs.RemoveLeg(2);
-                    break;
-                case 3:
-                    decrease = 98;
-                    _chickenLegs.RemoveLeg(3);
-                    break;
-                case 2:
-                    decrease = 108;
-                    _chickenLegs.RemoveLeg(4);
-                    break;
-                case 1:
-                    decrease = 118;
-                    _chickenLegs.RemoveLeg(5);
-                    break;
+                if (_hunger == hungerThresholds[i])
+                {
+                    // Remove the old chicken leg and add the new one
+                    _chickenLegs.RemoveLeg(hungerThresholds.Length - i);
+                    _chickenLegs.AddLeg(legPositions[i], 0, filePathCL_Hunger);
 
-                default:
-                    decrease = 0; // No decrease beyond the specified hunger levels
+                    // If it's the last leg, increase the decrease amount
+                    if (i == hungerThresholds.Length - 1)
+                    { 
+                        decrease = 40;
+                        
+                    }
                     break;
+                }
             }
 
-            // Decrease player's velocity
+            // Decrease player's velocity (by 10 or if its the last by 40)
             _player.decreaseVelocity(decrease);
         }
 

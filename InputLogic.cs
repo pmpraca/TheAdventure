@@ -157,12 +157,10 @@ namespace TheAdventure
 
             var elapsedTimeSinceMovementUpdate = DateTimeOffset.UtcNow - _lastUpdateTest;
 
+            // Every 10 secs (should be 1 min but for testing purposes) loses appetite (1 chicken leg) 
             var oneSecond = TimeSpan.FromSeconds(10);
             if (elapsedTimeSinceMovementUpdate >= oneSecond) {
-                
-                Console.WriteLine("AQUI");
                 _gameLogic.getHungry();
-
                 _lastUpdateTest = currentTime;
             } 
 
