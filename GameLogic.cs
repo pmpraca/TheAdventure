@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Silk.NET.Maths;
+using TheAdventure.Models.ChickenLeg;
 
 namespace TheAdventure
 {
@@ -12,6 +13,7 @@ namespace TheAdventure
 
         private Level? _currentLevel;
         private PlayerObject _player;
+        private ChickenLeg _chickenLegs = new();
         public GameLogic()
         {
 
@@ -20,6 +22,13 @@ namespace TheAdventure
         public void LoadGameState()
         {
             _player = new PlayerObject(1000);
+
+            _chickenLegs.addLeg(2,0);
+            _chickenLegs.addLeg(18,0);
+            _chickenLegs.addLeg(34,0);
+            _chickenLegs.addLeg(50,0);
+            _chickenLegs.addLeg(66,0);
+     
             var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
             var levelContent = File.ReadAllText(Path.Combine("Assets", "terrain.tmj"));
 
@@ -143,6 +152,7 @@ namespace TheAdventure
             }
 
             _player.Render(renderer);
+            _chickenLegs.renderChickenLegs(renderer);
         }
 
         private int _bombIds = 100;
@@ -165,18 +175,23 @@ namespace TheAdventure
             {
                 case 5:
                     decrease = 44;
+                    _chickenLegs.RemoveLeg(1);
                     break;
                 case 4:
                     decrease = 88;
+                    _chickenLegs.RemoveLeg(2);
                     break;
                 case 3:
                     decrease = 98;
+                    _chickenLegs.RemoveLeg(3);
                     break;
                 case 2:
                     decrease = 108;
+                    _chickenLegs.RemoveLeg(4);
                     break;
                 case 1:
                     decrease = 118;
+                    _chickenLegs.RemoveLeg(5);
                     break;
 
                 default:
