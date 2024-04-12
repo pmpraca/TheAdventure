@@ -15,8 +15,9 @@ public class AnimatedGameObject : RenderableGameObject
     private int _columnWidth = 0;
     private int _timePerFrame;
 
-    public AnimatedGameObject(string fileName, int durationInSeconds, int id, int numberOfFrames, int numberOfColumns,int numberOfRows, int x, int y):
-        base(fileName, id){
+    public AnimatedGameObject(string fileName, int durationInSeconds, int id, int numberOfFrames, int numberOfColumns, int numberOfRows, int x, int y) :
+        base(fileName, id)
+    {
         _durationInSeconds = durationInSeconds;
         _numberOfFrames = numberOfFrames;
         _numberOfColumns = numberOfColumns;
@@ -34,8 +35,9 @@ public class AnimatedGameObject : RenderableGameObject
         this.TextureSource = new Silk.NET.Maths.Rectangle<int>(_currentColumn * _columnWidth, _currentRow * _rowHeight, _columnWidth, _rowHeight);
     }
 
-    public override bool Update(int timeSinceLastFrame){
-        
+    public override bool Update(int timeSinceLastFrame)
+    {
+
 
         _timeSinceAnimationStart += timeSinceLastFrame;
 
@@ -49,9 +51,9 @@ public class AnimatedGameObject : RenderableGameObject
         //Console.WriteLine($"{this.Id}: currentFrame: {currentFrame} currentRow: {_currentRow} currentColumn: {_currentColumn}");
 
         this.TextureSource = new Silk.NET.Maths.Rectangle<int>(_currentColumn * _columnWidth, _currentRow * _rowHeight, _columnWidth, _rowHeight);
-    
+
         return true;
     }
 
-    
+
 }

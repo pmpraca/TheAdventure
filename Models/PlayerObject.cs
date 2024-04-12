@@ -16,7 +16,7 @@ public class PlayerObject : GameObject
     // Offset player sprite to have world position at x=24px y=42px
 
     private Rectangle<int> _source = new Rectangle<int>(0, 0, 48, 48);
-    private Rectangle<int> _target = new Rectangle<int>(0,0,48,48);
+    private Rectangle<int> _target = new Rectangle<int>(0, 0, 48, 48);
     private int _textureId;
     private int _pixelsPerSecond = 128;
 
@@ -26,7 +26,8 @@ public class PlayerObject : GameObject
         UpdateScreenTarget();
     }
 
-    private void UpdateScreenTarget(){
+    private void UpdateScreenTarget()
+    {
         var targetX = X + 24;
         var targetY = Y - 42;
 
@@ -45,7 +46,8 @@ public class PlayerObject : GameObject
         UpdateScreenTarget();
     }
 
-    public void Render(GameRenderer renderer){
+    public void Render(GameRenderer renderer)
+    {
         renderer.RenderTexture(_textureId, _source, _target);
     }
 }
