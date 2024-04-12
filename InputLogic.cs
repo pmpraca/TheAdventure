@@ -9,6 +9,7 @@ namespace TheAdventure
         private GameWindow _gameWindow;
         private GameRenderer _renderer;
         private DateTimeOffset _lastUpdate;
+        private DateTimeOffset _lastUpdateTest;
 
         public InputLogic(Sdl sdl, GameWindow window, GameRenderer renderer, GameLogic logic)
         {
@@ -17,6 +18,7 @@ namespace TheAdventure
             _gameWindow = window;
             _renderer = renderer;
             _lastUpdate = DateTimeOffset.UtcNow;
+            _lastUpdateTest = DateTimeOffset.UtcNow;
         }
 
         public bool ProcessInput()
@@ -27,6 +29,9 @@ namespace TheAdventure
             Event ev = new Event();
             var mouseX = 0;
             var mouseY = 0;
+
+            var timeSinceLastMovement = (int)currentTime.Subtract(_lastUpdate).TotalMilliseconds;
+
             while (_sdl.PollEvent(ref ev) != 0)
             {
                 if (ev.Type == (uint)EventType.Quit)
@@ -149,6 +154,18 @@ namespace TheAdventure
             }
 
             var timeSinceLastUpdateInMS = (int)currentTime.Subtract(_lastUpdate).TotalMilliseconds;
+
+            var elapsedTimeSinceMovementUpdate = DateTimeOffset.UtcNow - _lastUpdateTest;
+
+            var oneSecond = TimeSpan.FromSeconds(10);
+            if (elapsedTimeSinceMovementUpdate >= oneSecond) {
+                
+                Console.WriteLine("AQUI");
+                _gameLogic.getHungry();
+
+                _lastUpdateTest = currentTime;
+            } 
+
 
             if (_keyboardState[(int)Scancode.ScancodeUp] == 1)
             {

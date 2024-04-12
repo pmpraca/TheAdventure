@@ -18,7 +18,7 @@ public class PlayerObject : GameObject
     private Rectangle<int> _source = new Rectangle<int>(0, 0, 48, 48);
     private Rectangle<int> _target = new Rectangle<int>(0, 0, 48, 48);
     private int _textureId;
-    private int _pixelsPerSecond = 128;
+    private int _pixelsPerSecond = 128 ;
 
     public PlayerObject(int id) : base(id)
     {
@@ -44,6 +44,11 @@ public class PlayerObject : GameObject
         Y += (int)(down * pixelsToMove);
 
         UpdateScreenTarget();
+    }
+
+    public void decreaseVelocity(int decreased_velocity)
+    {
+        _pixelsPerSecond = decreased_velocity;
     }
 
     public void Render(GameRenderer renderer)

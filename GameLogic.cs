@@ -12,7 +12,6 @@ namespace TheAdventure
 
         private Level? _currentLevel;
         private PlayerObject _player;
-
         public GameLogic()
         {
 
@@ -154,5 +153,40 @@ namespace TheAdventure
             _gameObjects.Add(bomb.Id, bomb);
             ++_bombIds;
         }
+
+        private int _hunger = 0;
+        public void getHungry()
+        {
+            _hunger++;
+            int decrease = 0;
+
+            // Determine the decrease in velocity based on hunger level
+            switch (_hunger)
+            {
+                case 5:
+                    decrease = 44;
+                    break;
+                case 4:
+                    decrease = 88;
+                    break;
+                case 3:
+                    decrease = 98;
+                    break;
+                case 2:
+                    decrease = 108;
+                    break;
+                case 1:
+                    decrease = 118;
+                    break;
+
+                default:
+                    decrease = 0; // No decrease beyond the specified hunger levels
+                    break;
+            }
+
+            // Decrease player's velocity
+            _player.decreaseVelocity(decrease);
+        }
+
     }
 }
