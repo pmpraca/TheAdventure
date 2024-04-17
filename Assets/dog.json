@@ -1,0 +1,52 @@
+{
+    "rowCount" : 9,
+    "columnCount" : 4,
+    "frameWidth" : 48,
+    "frameHeight" : 48,
+    "frameCenter" : {
+        "offsetX" : 24,
+        "offsetY" : 42
+    },
+    "fileName" : "dog.png",
+    "animations" : {
+        "IdleDown" : {
+            "startFrame" : {
+                "row" : 6,
+                "col" : 0
+            },
+            "endFrame" : {
+                "row" : 6,
+                "col" : 2
+            },
+            "durationMs" : 1000,
+            "loop" : true
+        },
+        "MoveLeft": {
+            "startFrame" : {
+                "row" : 3,
+                "col" : 0
+            },
+            "endFrame" : {
+                "row" : 3,
+                "col" : 3
+            },
+            "durationMs" : 1000,
+            "loop" : true,
+            "flip" : 0
+        },
+        "MoveRight": {
+            "startFrame" : {
+                "row" : 1,
+                "col" : 0
+            },
+            "endFrame" : {
+                "row" : 1,
+                "col" : 3
+            },
+            "durationMs" : 1000,
+            "loop" : true,
+            "flip" : 0
+        }
+    }
+    
+}

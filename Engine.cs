@@ -13,7 +13,7 @@ namespace TheAdventure
 
         private Level? _currentLevel;
         private PlayerObject _player;
-        private NpcObject _npc;
+        private PetObject _dog;
         private GameRenderer _renderer;
         private Input _input;
 
@@ -55,26 +55,16 @@ namespace TheAdventure
             }
 
             _currentLevel = level;
-            /*SpriteSheet spriteSheet = new(_renderer, Path.Combine("Assets", "player.png"), 10, 6, 48, 48, new FrameOffset() { OffsetX = 24, OffsetY = 42 });
-            spriteSheet.Animations["IdleDown"] = new SpriteSheet.Animation()
-            {
-                StartFrame = new FramePosition(),//(0, 0),
-                EndFrame = new FramePosition() { Row = 0, Col = 5 },
-                DurationMs = 1000,
-                Loop = true
-            };
-            */
-                
 
             var spriteSheet = SpriteSheet.LoadSpriteSheet("player.json", "Assets", _renderer);
             if(spriteSheet != null){
                 _player = new PlayerObject(spriteSheet, 100, 100);
             }
 
-            var npcSpriteSheet = SpriteSheet.LoadSpriteSheet("player.json", "Assets", _renderer);
+            var npcSpriteSheet = SpriteSheet.LoadSpriteSheet("dog.json", "Assets", _renderer);
             if (npcSpriteSheet != null)
             {
-                _npc = new NpcObject(npcSpriteSheet, 50, 50);
+                _dog = new PetObject(npcSpriteSheet, 85, 120);
             }
             _renderer.SetWorldBounds(new Rectangle<int>(0, 0, _currentLevel.Width * _currentLevel.TileWidth,
                 _currentLevel.Height * _currentLevel.TileHeight));
@@ -95,7 +85,7 @@ namespace TheAdventure
                 _currentLevel.Width * _currentLevel.TileWidth, _currentLevel.Height * _currentLevel.TileHeight,
                 secsSinceLastFrame);
 
-            _npc.Move(up ? 1.0 : 0.0, down ? 1.0 : 0.0, left ? 1.0 : 0.0, right ? 1.0 : 0.0, secsSinceLastFrame);
+            _dog.Move(up ? 1.0 : 0.0, down ? 1.0 : 0.0, left ? 1.0 : 0.0, right ? 1.0 : 0.0, secsSinceLastFrame);
 
             var itemsToRemove = new List<int>();
             itemsToRemove.AddRange(GetAllTemporaryGameObjects().Where(gameObject => gameObject.IsExpired)
@@ -192,7 +182,7 @@ namespace TheAdventure
             }
 
             _player.Render(_renderer);
-            _npc.Render(_renderer);
+            _dog.Render(_renderer);
 
         }
 
