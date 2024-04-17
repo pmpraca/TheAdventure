@@ -56,6 +56,16 @@ public class PlayerObject : RenderableGameObject
             SpriteSheet.ActivateAnimation(_currentAnimation);
         }
 
+        if (y > Position.Y && _currentAnimation != "MoveDown")
+        {
+            _currentAnimation = "MoveDown";
+            SpriteSheet.ActivateAnimation(_currentAnimation);
+        }
+        else if (y < Position.Y && _currentAnimation != "MoveUp")
+        {
+            _currentAnimation = "MoveUp";
+            SpriteSheet.ActivateAnimation(_currentAnimation);
+        }
         Position = (x, y);
     }
 }
