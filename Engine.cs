@@ -13,6 +13,7 @@ namespace TheAdventure
 
         private Level? _currentLevel;
         private PlayerObject _player;
+        private NpcObject _npc;
         private GameRenderer _renderer;
         private Input _input;
 
@@ -63,9 +64,17 @@ namespace TheAdventure
                 Loop = true
             };
             */
+                
+
             var spriteSheet = SpriteSheet.LoadSpriteSheet("player.json", "Assets", _renderer);
             if(spriteSheet != null){
                 _player = new PlayerObject(spriteSheet, 100, 100);
+            }
+
+            var npcSpriteSheet = SpriteSheet.LoadSpriteSheet("player.json", "Assets", _renderer);
+            if (npcSpriteSheet != null)
+            {
+                _npc = new NpcObject(npcSpriteSheet, 50, 50);
             }
             _renderer.SetWorldBounds(new Rectangle<int>(0, 0, _currentLevel.Width * _currentLevel.TileWidth,
                 _currentLevel.Height * _currentLevel.TileHeight));
@@ -85,6 +94,8 @@ namespace TheAdventure
             _player.UpdatePlayerPosition(up ? 1.0 : 0.0, down ? 1.0 : 0.0, left ? 1.0 : 0.0, right ? 1.0 : 0.0,
                 _currentLevel.Width * _currentLevel.TileWidth, _currentLevel.Height * _currentLevel.TileHeight,
                 secsSinceLastFrame);
+
+            _npc.Move(up ? 1.0 : 0.0, down ? 1.0 : 0.0, left ? 1.0 : 0.0, right ? 1.0 : 0.0, secsSinceLastFrame);
 
             var itemsToRemove = new List<int>();
             itemsToRemove.AddRange(GetAllTemporaryGameObjects().Where(gameObject => gameObject.IsExpired)
@@ -181,6 +192,8 @@ namespace TheAdventure
             }
 
             _player.Render(_renderer);
+            _npc.Render(_renderer);
+
         }
 
         private void AddBomb(int x, int y)
